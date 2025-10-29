@@ -177,12 +177,18 @@ rag-google-driver/
 
 ## 📚 Documentation
 
-All documentation is in the `docs/` folder:
+### Quick References
+- **[PM2 Cheat Sheet](PM2_CHEATSHEET.md)** - Quick PM2 commands reference
+- **[Quick Reference](QUICK_REFERENCE.md)** - Service Account quick guide
+- **[Migration Guide](MIGRATION_GUIDE.md)** - Upgrading from old setup
 
+### Detailed Guides
 - **[Quick Start Guide](docs/QUICKSTART.md)** - Get started quickly
 - **[Setup Guide](docs/SETUP_GUIDE.md)** - Detailed setup instructions
 - **[PM2 Deployment Guide](PM2_GUIDE.md)** - Production deployment with PM2
 - **[Service Account with Env Vars](docs/SERVICE_ACCOUNT_ENV.md)** - Using environment variables instead of JSON file
+
+### Technical Documentation
 - **[Incremental Sync](docs/INCREMENTAL_SYNC.md)** - How change detection works
 - **[API Documentation](docs/API_DOCUMENTATION.md)** - API endpoints
 - **[Architecture](docs/ARCHITECTURE.md)** - System architecture
