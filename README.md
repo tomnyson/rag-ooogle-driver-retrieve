@@ -32,36 +32,41 @@ npm start
 
 ### Môi trường Production
 
-#### Option 1: Chạy trực tiếp với Node.js
+#### Option 1: Chạy với PM2 (Recommended)
 
 ```bash
-# 1. Cài đặt dependencies (production only)
+# 1. Cài đặt dependencies
 npm install --production
-# hoặc
-yarn install --production
 
 # 2. Cấu hình môi trường production
 cp .env.sample .env
 # Chỉnh sửa .env với thông tin production
 
-# 3. Chạy với PM2 (recommended)
+# 3. Cài đặt PM2 globally
 npm install -g pm2
 
-# Chạy API server
-pm2 start api-server.js --name "rag-api"
+# 4. Start services với ecosystem file
+npm run pm2:start
+# hoặc
+pm2 start ecosystem.config.js
 
-# Chạy cron job
-pm2 start cron-server.js --name "rag-cron"
+# 5. Xem status
+npm run pm2:status
 
-# Xem logs
-pm2 logs
+# 6. Xem logs
+npm run pm2:logs
 
-# Khởi động lại
-pm2 restart all
+# 7. Setup auto-start on boot
+pm2 startup
+pm2 save
 
-# Dừng services
-pm2 stop all
+# 8. Các commands khác
+npm run pm2:restart    # Restart services
+npm run pm2:stop       # Stop services
+npm run pm2:monit      # Monitor dashboard
 ```
+
+**Xem hướng dẫn chi tiết:** [PM2_GUIDE.md](PM2_GUIDE.md)
 
 #### Option 2: Chạy với Docker
 
@@ -104,9 +109,24 @@ sudo journalctl -u rag-google-drive -f
 
 ### Main Services
 ```bash
+# Development
 npm run cron        # Chạy scheduled sync (cron job)
 npm run api         # Chạy API server (port 3000)
 npm start           # Chạy cả API và cron cùng lúc
+
+# Production với PM2
+npm run pm2:start   # Start cả API và Cron với PM2
+npm run pm2:stop    # Stop services
+npm run pm2:restart # Restart services
+npm run pm2:status  # Xem status
+npm run pm2:logs    # Xem logs
+npm run pm2:monit   # Monitor dashboard
+```
+
+### Utilities
+```bash
+# Service Account
+npm run convert-sa  # Convert service-account.json sang env vars
 ```
 
 ### Environment Variables
@@ -161,6 +181,7 @@ All documentation is in the `docs/` folder:
 
 - **[Quick Start Guide](docs/QUICKSTART.md)** - Get started quickly
 - **[Setup Guide](docs/SETUP_GUIDE.md)** - Detailed setup instructions
+- **[PM2 Deployment Guide](PM2_GUIDE.md)** - Production deployment with PM2
 - **[Service Account with Env Vars](docs/SERVICE_ACCOUNT_ENV.md)** - Using environment variables instead of JSON file
 - **[Incremental Sync](docs/INCREMENTAL_SYNC.md)** - How change detection works
 - **[API Documentation](docs/API_DOCUMENTATION.md)** - API endpoints
