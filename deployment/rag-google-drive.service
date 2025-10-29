@@ -1,0 +1,27 @@
+[Unit]
+Description=RAG Google Drive to Supabase Sync Service
+After=network.target
+
+[Service]
+Type=simple
+User=nodejs
+WorkingDirectory=/opt/rag-google-driver
+Environment="NODE_ENV=production"
+ExecStart=/usr/bin/node cron-server.js
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=rag-google-drive
+
+# Security settings
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/opt/rag-google-driver/logs
+
+[Install]
+WantedBy=multi-user.target
+
+

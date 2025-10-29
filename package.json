@@ -1,0 +1,27 @@
+{
+  "name": "rag-google-driver",
+  "version": "1.0.0",
+  "description": "Node.js cron job to sync Google Drive files to Supabase vector storage with Gemini embeddings",
+  "main": "cron-server.js",
+  "type": "module",
+  "scripts": {
+    "cron": "node cron-server.js",
+    "api": "node api-server.js",
+    "start": "node cron-server.js & node api-server.js"
+  },
+  "keywords": ["google-drive", "supabase", "gemini", "rag", "vector", "cron"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@google/generative-ai": "^0.21.0",
+    "@supabase/supabase-js": "^2.39.0",
+    "googleapis": "^131.0.0",
+    "node-cron": "^3.0.3",
+    "pdf-parse": "^1.1.1",
+    "mammoth": "^1.6.0",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "cors": "^2.8.5"
+  }
+}
+
