@@ -18,7 +18,9 @@ class GoogleDriveService {
    */
   async initialize() {
     try {
-      // Use Service Account authentication
+      let serviceAccount = null;
+
+      // Option 1: Use Service Account from file
       if (config.google.serviceAccountFile) {
         const serviceAccountPath = path.resolve(config.google.serviceAccountFile);
         
@@ -26,8 +28,30 @@ class GoogleDriveService {
           throw new Error(`Service account file not found: ${serviceAccountPath}`);
         }
 
-        const serviceAccount = JSON.parse(fs.readFileSync(serviceAccountPath, 'utf8'));
-        
+        serviceAccount = JSON.parse(fs.readFileSync(serviceAccountPath, 'utf8'));
+        console.log('🔑 Using Service Account from file');
+      } 
+      // Option 2: Use Service Account from environment variables
+      else if (config.google.serviceAccountEnv.type && 
+               config.google.serviceAccountEnv.private_key && 
+               config.google.serviceAccountEnv.client_email) {
+        serviceAccount = {
+          type: config.google.serviceAccountEnv.type,
+          project_id: config.google.serviceAccountEnv.project_id,
+          private_key_id: config.google.serviceAccountEnv.private_key_id,
+          private_key: config.google.serviceAccountEnv.private_key,
+          client_email: config.google.serviceAccountEnv.client_email,
+          client_id: config.google.serviceAccountEnv.client_id,
+          auth_uri: config.google.serviceAccountEnv.auth_uri,
+          token_uri: config.google.serviceAccountEnv.token_uri,
+          auth_provider_x509_cert_url: config.google.serviceAccountEnv.auth_provider_x509_cert_url,
+          client_x509_cert_url: config.google.serviceAccountEnv.client_x509_cert_url,
+        };
+        console.log('🔑 Using Service Account from environment variables');
+      }
+
+      // Initialize with Service Account
+      if (serviceAccount) {
         this.auth = new google.auth.GoogleAuth({
           credentials: serviceAccount,
           scopes: ['https://www.googleapis.com/auth/drive.readonly'],
@@ -54,7 +78,7 @@ class GoogleDriveService {
         
         console.log('✅ Google Drive API initialized successfully (OAuth2)');
       } else {
-        throw new Error('No valid authentication method configured. Please set GOOGLE_SERVICE_ACCOUNT_FILE or OAuth credentials.');
+        throw new Error('No valid authentication method configured. Please set GOOGLE_SERVICE_ACCOUNT_FILE or service account environment variables.');
       }
     } catch (error) {
       console.error('❌ Failed to initialize Google Drive API:', error.message);

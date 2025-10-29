@@ -7,7 +7,16 @@
   "scripts": {
     "cron": "node cron-server.js",
     "api": "node api-server.js",
-    "start": "node cron-server.js & node api-server.js"
+    "start": "node cron-server.js & node api-server.js",
+    "convert-sa": "node scripts/convert-service-account-to-env.js",
+    "pm2:start": "pm2 start ecosystem.config.js",
+    "pm2:stop": "pm2 stop ecosystem.config.js",
+    "pm2:restart": "pm2 restart ecosystem.config.js",
+    "pm2:reload": "pm2 reload ecosystem.config.js",
+    "pm2:delete": "pm2 delete ecosystem.config.js",
+    "pm2:logs": "pm2 logs",
+    "pm2:monit": "pm2 monit",
+    "pm2:status": "pm2 status"
   },
   "keywords": ["google-drive", "supabase", "gemini", "rag", "vector", "cron"],
   "author": "",
