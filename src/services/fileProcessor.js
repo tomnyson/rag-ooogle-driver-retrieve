@@ -37,6 +37,11 @@ class FileProcessorService {
         case MIME_TYPES.DOC:
         case MIME_TYPES.GOOGLE_DOC:
           text = await this.extractFromWord(fileBuffer);
+          
+          // Check if file was skipped (old .doc format)
+          if (text === '' && fileName.endsWith('.doc')) {
+            this.logger.warn(`⚠️  Skipped ${fileName}: Old .doc format not supported. Please convert to .docx`);
+          }
           break;
 
         default:
@@ -44,7 +49,10 @@ class FileProcessorService {
           text = '';
       }
 
-      this.logger.info(`Extracted ${text.length} characters from ${fileName}`);
+      if (text && text.length > 0) {
+        this.logger.info(`Extracted ${text.length} characters from ${fileName}`);
+      }
+      
       return text;
     } catch (error) {
       this.logger.error(`Error extracting text from ${fileName}:`, error.message);
@@ -78,6 +86,7 @@ class FileProcessorService {
 
   /**
    * Extract text from Word document (.doc, .docx)
+   * Note: Only .docx (Word 2007+) is supported. .doc (Word 97-2003) will be skipped.
    * @param {Buffer} fileBuffer - Word file buffer
    * @returns {Promise<string>} Extracted text
    * @throws {FileProcessingError} If Word document parsing fails
@@ -87,6 +96,12 @@ class FileProcessorService {
       const result = await mammoth.extractRawText({ buffer: fileBuffer });
       return result.value;
     } catch (error) {
+      // Check if it's a .doc file (not supported by mammoth)
+      if (error.message && error.message.includes('body element')) {
+        this.logger.warn('Old .doc format detected (Word 97-2003). Only .docx is supported. Skipping file.');
+        return ''; // Return empty string instead of throwing error
+      }
+      
       this.logger.error('Error parsing Word document:', error.message);
       throw new FileProcessingError(
         'Failed to parse Word document',

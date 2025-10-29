@@ -178,17 +178,19 @@ rag-google-driver/
 ## 📚 Documentation
 
 ### Quick References
-- **[PM2 Cheat Sheet](PM2_CHEATSHEET.md)** - Quick PM2 commands reference
-- **[Quick Reference](QUICK_REFERENCE.md)** - Service Account quick guide
-- **[Migration Guide](MIGRATION_GUIDE.md)** - Upgrading from old setup
+- **[Troubleshooting Guide](docs/TROUBLESHOOTING.md)** - Common issues and solutions
+- **[PM2 Cheat Sheet](docs/PM2_CHEATSHEET.md)** - Quick PM2 commands reference
+- **[Quick Reference](docs/QUICK_REFERENCE.md)** - Service Account quick guide
+- **[Migration Guide](docs/MIGRATION_GUIDE.md)** - Upgrading from old setup
 
 ### Detailed Guides
 - **[Quick Start Guide](docs/QUICKSTART.md)** - Get started quickly
 - **[Setup Guide](docs/SETUP_GUIDE.md)** - Detailed setup instructions
-- **[PM2 Deployment Guide](PM2_GUIDE.md)** - Production deployment with PM2
+- **[PM2 Deployment Guide](docs/PM2_GUIDE.md)** - Production deployment with PM2
 - **[Service Account with Env Vars](docs/SERVICE_ACCOUNT_ENV.md)** - Using environment variables instead of JSON file
 
 ### Technical Documentation
+- **[Supported File Formats](docs/SUPPORTED_FORMATS.md)** - Supported file types and conversion guide
 - **[Incremental Sync](docs/INCREMENTAL_SYNC.md)** - How change detection works
 - **[API Documentation](docs/API_DOCUMENTATION.md)** - API endpoints
 - **[Architecture](docs/ARCHITECTURE.md)** - System architecture
@@ -206,12 +208,21 @@ rag-google-driver/
 
 - ✅ **Incremental sync** - Only processes new/modified files
 - ✅ Automatic Google Drive file sync
-- ✅ Text extraction (PDF, Word, Google Docs)
+- ✅ Text extraction (PDF, .docx, Google Docs)
 - ✅ Vector embeddings with Gemini AI
 - ✅ Semantic search with cosine similarity
 - ✅ REST API for queries
 - ✅ Scheduled cron jobs
 - ✅ Docker support
+- ✅ PM2 process management
+
+### Supported File Formats
+- ✅ PDF (`.pdf`)
+- ✅ Word Modern (`.docx`)
+- ✅ Google Docs
+- ⚠️ Word Legacy (`.doc`) - Not supported, will be skipped
+
+See [Supported Formats](docs/SUPPORTED_FORMATS.md) for details and conversion guide.
 
 ## 🛠️ Setup Chi Tiết
 

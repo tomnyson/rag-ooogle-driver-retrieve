@@ -107,7 +107,13 @@ class SyncService {
       const cleanedText = fileProcessorService.cleanText(rawText);
 
       if (!cleanedText || cleanedText.length < 10) {
-        console.warn(`⚠️  File ${file.name} has no extractable text content`);
+        // Check if it's an old .doc file
+        if (file.name.endsWith('.doc') && !file.name.endsWith('.docx')) {
+          console.warn(`⚠️  Skipped ${file.name}: Old .doc format not supported. Please convert to .docx`);
+          this.stats.skipped++;
+        } else {
+          console.warn(`⚠️  File ${file.name} has no extractable text content`);
+        }
         return;
       }
 

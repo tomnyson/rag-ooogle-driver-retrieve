@@ -16,11 +16,21 @@ export const MIME_TYPES = {
 
 /**
  * Supported file types array
+ * Note: .doc (Word 97-2003) is listed but not fully supported - will be skipped during processing
  */
 export const SUPPORTED_MIME_TYPES = [
   MIME_TYPES.PDF,
   MIME_TYPES.DOCX,
-  MIME_TYPES.DOC,
+  MIME_TYPES.DOC, // Listed for detection, but will be skipped (not supported by mammoth)
+  MIME_TYPES.GOOGLE_DOC,
+];
+
+/**
+ * Fully supported file types (can be processed)
+ */
+export const FULLY_SUPPORTED_MIME_TYPES = [
+  MIME_TYPES.PDF,
+  MIME_TYPES.DOCX,
   MIME_TYPES.GOOGLE_DOC,
 ];
 

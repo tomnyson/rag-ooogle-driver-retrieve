@@ -4,120 +4,237 @@ All notable changes to this project will be documented in this file.
 
 ## [1.1.0] - 2025-10-29
 
+### Added - PM2 Support
+
+#### Configuration Files
+- ✅ `ecosystem.config.cjs` - PM2 configuration for API and Cron services
+- ✅ 8 new npm scripts for PM2 management
+
+#### Scripts
+- ✅ `scripts/pm2-setup.sh` - Interactive PM2 management tool
+- ✅ `scripts/pm2-quick-start.sh` - One-command production deployment
+- ✅ `scripts/README.md` - Scripts documentation
+
+#### Documentation
+- ✅ `PM2_GUIDE.md` - Complete PM2 deployment guide (36KB)
+- ✅ `PM2_CHEATSHEET.md` - Quick command reference
+- ✅ `PM2_SETUP_SUMMARY.md` - Setup summary and checklist
+- ✅ `MIGRATION_GUIDE.md` - Migration guide from old setup
+- ✅ `NOTES.md` - Project notes and troubleshooting
+
+#### NPM Scripts
+```json
+{
+  "pm2:start": "pm2 start ecosystem.config.cjs",
+  "pm2:stop": "pm2 stop ecosystem.config.cjs",
+  "pm2:restart": "pm2 restart ecosystem.config.cjs",
+  "pm2:reload": "pm2 reload ecosystem.config.cjs",
+  "pm2:delete": "pm2 delete ecosystem.config.cjs",
+  "pm2:logs": "pm2 logs",
+  "pm2:monit": "pm2 monit",
+  "pm2:status": "pm2 status"
+}
+```
+
+#### Features
+- ✅ Auto-restart on crash
+- ✅ Log management (separate error and output logs)
+- ✅ Process monitoring
+- ✅ Zero-downtime reload
+- ✅ Memory limit management (500MB default)
+- ✅ Startup script support (auto-start on boot)
+
+### Added - Service Account Environment Variables Support
+
+#### Configuration
+- ✅ Support for Google Service Account credentials via environment variables
+- ✅ Backward compatible with JSON file method
+- ✅ Updated `.env.sample` with both options
+- ✅ New `.env.example` with detailed comments
+
+#### Scripts
+- ✅ `scripts/convert-service-account-to-env.js` - Convert JSON to env vars
+- ✅ `npm run convert-sa` - NPM script for conversion
+
+#### Code Changes
+- ✅ `src/config/index.js` - Added env vars support
+- ✅ `src/services/googleDrive.js` - Support both JSON file and env vars
+
+#### Documentation
+- ✅ `docs/SERVICE_ACCOUNT_ENV.md` - Complete guide for env vars setup
+- ✅ `QUICK_REFERENCE.md` - Quick reference guide
+- ✅ `CHANGELOG_SERVICE_ACCOUNT.md` - Detailed changelog
+
+#### Benefits
+- ✅ More secure for production (no JSON file to commit)
+- ✅ Better for Docker/Kubernetes deployments
+- ✅ Compatible with CI/CD pipelines
+- ✅ Works with secret managers (AWS Secrets Manager, etc.)
+
 ### Changed
-- **BREAKING**: Migrated from `documents` table to `knowledge_base` table
-- Changed embedding storage from `vector(768)` to `jsonb[]` format
-- Updated search to use client-side cosine similarity calculation
-- Removed `summary` field (can be stored in metadata if needed)
-- Changed unique identifier from `file_id` to `file_name`
 
-### Added
-- Support for `teacher_id` and `user_id` columns in knowledge_base table
-- Support for `chunk_index` for future chunking features
-- Added `title` field for document titles
-- Added `file_path` field for local file paths
-- Changed `web_view_link` to `file_url`
-- New SQL setup file: `supabase-setup-knowledge-base.sql`
-- Migration guide for upgrading to pgvector (optional): `MIGRATION.md`
-- Manual cosine similarity calculation in Supabase service
+#### File Extensions
+- 🔄 `ecosystem.config.js` → `ecosystem.config.cjs` (CommonJS for PM2)
+  - Required because project uses ES modules (`"type": "module"`)
+  - PM2 requires CommonJS format for config files
 
-### Configuration
-- Added `TEACHER_ID` environment variable
-- Added `USER_ID` environment variable
+#### Documentation Updates
+- 📝 `README.md` - Added PM2 and env vars documentation
+- 📝 All PM2 references updated to use `.cjs` extension
+- 📝 Reorganized documentation section with categories
 
-### Performance
-- Current implementation fetches all documents for similarity search
-- For better performance with large datasets (>1000 docs), see MIGRATION.md for pgvector upgrade
+### Fixed
+- 🐛 ES module compatibility issue with PM2 config file
+- 🐛 Updated all documentation to reference correct file extensions
 
-## [1.0.0] - 2025-10-29
-
-### Initial Release
-- Google Drive integration with OAuth2
-- Support for PDF, Word documents (docx, doc), and Google Docs
-- Gemini AI integration for embeddings and summarization
-- Supabase vector storage
-- Cron job scheduler
-- Incremental sync (only updates changed files)
-- Docker support
-- Comprehensive documentation
+## [1.0.0] - Previous Version
 
 ### Features
-- Automatic file extraction and text processing
-- 768-dimensional embeddings using Gemini embedding-001 model
-- Vector similarity search
-- Configurable cron schedule
-- Statistics and logging
-- Error handling and retry logic
-
-### Documentation
-- README.md - Complete usage guide
-- QUICKSTART.md - 5-minute quick start
-- DEPLOYMENT.md - Production deployment guide
-- ARCHITECTURE.md - System architecture documentation
+- ✅ Google Drive file sync
+- ✅ Supabase vector storage
+- ✅ Gemini AI embeddings
+- ✅ Incremental sync
+- ✅ REST API
+- ✅ Cron scheduling
+- ✅ Docker support
+- ✅ PDF, Word, Google Docs support
 
 ---
 
-## Migration Notes
+## Migration from 1.0.0 to 1.1.0
 
-### From v1.0.0 to v1.1.0
+### Required Changes
 
-If you were using v1.0.0 with the `documents` table:
-
-1. **Option A: Fresh Start**
-   - Use your existing `knowledge_base` table
-   - Run sync to populate it with fresh data
-
-2. **Option B: Migrate Data**
-   ```sql
-   -- Copy data from documents to knowledge_base
-   insert into knowledge_base (
-     title,
-     content,
-     file_name,
-     file_url,
-     file_type,
-     embedding,
-     metadata,
-     created_at,
-     updated_at
-   )
-   select
-     file_name as title,
-     content,
-     file_name,
-     web_view_link as file_url,
-     file_type,
-     ARRAY[embedding::jsonb] as embedding, -- Convert vector to jsonb[]
-     metadata,
-     created_at,
-     updated_at
-   from documents;
+1. **Rename ecosystem config (if exists)**
+   ```bash
+   mv ecosystem.config.js ecosystem.config.cjs
    ```
 
-3. **Update configuration**
-   - Add `TEACHER_ID` and `USER_ID` to your `.env` file if needed
+2. **Update package.json** (already done automatically)
+   - PM2 scripts now reference `.cjs` file
 
-4. **Test**
-   - Run `npm start once` to verify sync works
-   - Run `npm run search "test"` to verify search works
+### Optional Changes
 
-### Breaking Changes
+1. **Convert to environment variables**
+   ```bash
+   npm run convert-sa
+   # Copy output to .env
+   ```
 
-- Table name changed from `documents` to `knowledge_base`
-- Embedding format changed from `vector(768)` to `jsonb[]`
-- `summary` field removed (store in metadata if needed)
-- `web_view_link` renamed to `file_url`
-- `file_id` no longer used as unique key (using `file_name` instead)
+2. **Setup PM2**
+   ```bash
+   npm install -g pm2
+   npm run pm2:start
+   pm2 save
+   pm2 startup
+   ```
 
-### Compatibility
-
-- Node.js >= 18.x required
-- Supabase with `knowledge_base` table
-- Google Drive API v3
-- Gemini AI API (embedding-001 model)
+See [MIGRATION_GUIDE.md](MIGRATION_GUIDE.md) for detailed instructions.
 
 ---
 
-For upgrade assistance, see MIGRATION.md or create an issue on GitHub.
+## Upgrade Instructions
 
+### From 1.0.0 to 1.1.0
 
+```bash
+# 1. Pull latest changes
+git pull
+
+# 2. Install dependencies (if any new)
+npm install
+
+# 3. Rename ecosystem config (if you have it)
+[ -f ecosystem.config.js ] && mv ecosystem.config.js ecosystem.config.cjs
+
+# 4. (Optional) Convert to env vars
+npm run convert-sa
+
+# 5. (Optional) Setup PM2
+npm install -g pm2
+npm run pm2:start
+```
+
+---
+
+## Breaking Changes
+
+### None
+
+Version 1.1.0 is fully backward compatible with 1.0.0:
+- ✅ Can still use `service-account.json`
+- ✅ Can still run with `node` directly
+- ✅ Can still use Docker/systemd
+- ✅ All existing features work as before
+
+New features are optional enhancements.
+
+---
+
+## Deprecations
+
+### None
+
+No features are deprecated in this version.
+
+---
+
+## Security
+
+### Improvements
+- ✅ Support for environment variables (more secure than JSON files)
+- ✅ Better secret management for production
+- ✅ Compatible with secret managers
+
+### Recommendations
+- 🔒 Use environment variables in production
+- 🔒 Never commit `.env` or `service-account.json`
+- 🔒 Rotate credentials regularly
+- 🔒 Use secret managers (AWS Secrets Manager, etc.)
+
+---
+
+## Performance
+
+### Improvements
+- ✅ PM2 cluster mode support (can scale to multiple instances)
+- ✅ Better memory management with auto-restart
+- ✅ Zero-downtime reload capability
+
+---
+
+## Documentation
+
+### New Files
+- `PM2_GUIDE.md` - Complete PM2 guide
+- `PM2_CHEATSHEET.md` - Quick reference
+- `PM2_SETUP_SUMMARY.md` - Setup summary
+- `MIGRATION_GUIDE.md` - Migration guide
+- `NOTES.md` - Project notes
+- `CHANGELOG.md` - This file
+- `docs/SERVICE_ACCOUNT_ENV.md` - Env vars guide
+- `QUICK_REFERENCE.md` - Quick reference
+- `CHANGELOG_SERVICE_ACCOUNT.md` - Service account changelog
+
+### Updated Files
+- `README.md` - Added PM2 and env vars sections
+- `.env.sample` - Added env vars options
+- `.env.example` - New detailed example
+
+---
+
+## Contributors
+
+- Development Team
+
+---
+
+## Links
+
+- [GitHub Repository](https://github.com/your-repo)
+- [Documentation](docs/)
+- [Issues](https://github.com/your-repo/issues)
+
+---
+
+**Note:** This changelog follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) format.
