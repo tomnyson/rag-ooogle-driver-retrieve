@@ -38,7 +38,7 @@ npm run pm2:monit
 
 ```bash
 # Start với ecosystem file
-pm2 start ecosystem.config.js
+pm2 start ecosystem.config.cjs
 
 # Hoặc start từng service riêng
 pm2 start api-server.js --name rag-api
@@ -58,7 +58,7 @@ pm2 start cron-server.js --name rag-cron
 
 ```bash
 # Start
-pm2 start ecosystem.config.js
+pm2 start ecosystem.config.cjs
 npm run pm2:start
 
 # Stop
@@ -125,7 +125,7 @@ pm2 save
 pm2 resurrect
 ```
 
-## ⚙️ Configuration (ecosystem.config.js)
+## ⚙️ Configuration (ecosystem.config.cjs)
 
 ```javascript
 module.exports = {
@@ -197,7 +197,7 @@ pm2 startup
 sudo env PATH=$PATH:/usr/bin pm2 startup systemd -u your-user --hp /home/your-user
 
 # Start services
-pm2 start ecosystem.config.js
+pm2 start ecosystem.config.cjs
 
 # Save process list
 pm2 save
@@ -265,7 +265,7 @@ pm2 restart rag-api --update-env
 
 ```bash
 # Set max memory restart
-pm2 start ecosystem.config.js --max-memory-restart 500M
+pm2 start ecosystem.config.cjs --max-memory-restart 500M
 
 # Monitor memory
 pm2 monit
@@ -308,7 +308,7 @@ pm2 set pm2-logrotate:compress true
 # Sử dụng .env file
 # PM2 sẽ tự động load .env nếu có dotenv trong code
 
-# Hoặc set trong ecosystem.config.js
+# Hoặc set trong ecosystem.config.cjs
 env: {
   NODE_ENV: 'production',
   API_PORT: 3000,
@@ -331,7 +331,7 @@ pm2 set pm2-logrotate:rotateInterval '0 0 * * *'  # Daily at midnight
 ### 3. Memory Management
 
 ```javascript
-// ecosystem.config.js
+// ecosystem.config.cjs
 {
   max_memory_restart: '500M',  // Restart if > 500MB
   min_uptime: '10s',           // Min uptime before restart
@@ -343,7 +343,7 @@ pm2 set pm2-logrotate:rotateInterval '0 0 * * *'  # Daily at midnight
 
 ```bash
 # Use reload instead of restart
-pm2 reload ecosystem.config.js
+pm2 reload ecosystem.config.cjs
 
 # Or with cluster mode
 pm2 reload all
@@ -382,13 +382,13 @@ sudo chown -R ragapp:ragapp /path/to/app
 su - ragapp
 
 # Start PM2
-pm2 start ecosystem.config.js
+pm2 start ecosystem.config.cjs
 ```
 
 ### 2. Limit resources
 
 ```javascript
-// ecosystem.config.js
+// ecosystem.config.cjs
 {
   max_memory_restart: '500M',
   instances: 2,  // Limit instances

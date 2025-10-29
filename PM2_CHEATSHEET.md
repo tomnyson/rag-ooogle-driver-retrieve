@@ -7,7 +7,7 @@ Quick reference cho các PM2 commands thường dùng.
 ```bash
 # Start
 npm run pm2:start
-pm2 start ecosystem.config.js
+pm2 start ecosystem.config.cjs
 pm2 start api-server.js --name rag-api
 
 # Stop
@@ -97,17 +97,17 @@ pm2 save --force
 
 ```bash
 # Start with ecosystem
-pm2 start ecosystem.config.js
+pm2 start ecosystem.config.cjs
 
 # Start specific app
-pm2 start ecosystem.config.js --only rag-api
+pm2 start ecosystem.config.cjs --only rag-api
 
 # Update env
-pm2 restart ecosystem.config.js --update-env
+pm2 restart ecosystem.config.cjs --update-env
 
 # Different environments
-pm2 start ecosystem.config.js --env production
-pm2 start ecosystem.config.js --env development
+pm2 start ecosystem.config.cjs --env production
+pm2 start ecosystem.config.cjs --env development
 ```
 
 ## 🔍 Logs
@@ -163,7 +163,7 @@ pm2 start app.js --env production
 # Update env
 pm2 restart app.js --update-env
 
-# In ecosystem.config.js
+# In ecosystem.config.cjs
 env: {
   NODE_ENV: 'production',
   API_PORT: 3000

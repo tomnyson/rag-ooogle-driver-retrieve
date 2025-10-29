@@ -93,7 +93,7 @@ echo ""
 
 # Start services
 echo "🚀 Starting services with PM2..."
-pm2 start ecosystem.config.js
+pm2 start ecosystem.config.cjs
 
 echo ""
 echo -e "${GREEN}✅ Services started successfully!${NC}"

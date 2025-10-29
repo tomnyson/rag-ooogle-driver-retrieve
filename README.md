@@ -48,7 +48,7 @@ npm install -g pm2
 # 4. Start services với ecosystem file
 npm run pm2:start
 # hoặc
-pm2 start ecosystem.config.js
+pm2 start ecosystem.config.cjs
 
 # 5. Xem status
 npm run pm2:status

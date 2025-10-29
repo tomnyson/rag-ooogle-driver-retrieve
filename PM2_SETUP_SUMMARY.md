@@ -3,7 +3,7 @@
 ## 📦 Files Created
 
 ### Configuration
-- ✅ `ecosystem.config.js` - PM2 configuration file
+- ✅ `ecosystem.config.cjs` - PM2 configuration file
 - ✅ `package.json` - Updated with PM2 scripts
 
 ### Scripts
@@ -48,7 +48,7 @@ npm run pm2:logs
 npm install -g pm2
 
 # Start with ecosystem file
-pm2 start ecosystem.config.js
+pm2 start ecosystem.config.cjs
 
 # View status
 pm2 status
@@ -61,11 +61,11 @@ pm2 logs
 
 ```json
 {
-  "pm2:start": "pm2 start ecosystem.config.js",
-  "pm2:stop": "pm2 stop ecosystem.config.js",
-  "pm2:restart": "pm2 restart ecosystem.config.js",
-  "pm2:reload": "pm2 reload ecosystem.config.js",
-  "pm2:delete": "pm2 delete ecosystem.config.js",
+  "pm2:start": "pm2 start ecosystem.config.cjs",
+  "pm2:stop": "pm2 stop ecosystem.config.cjs",
+  "pm2:restart": "pm2 restart ecosystem.config.cjs",
+  "pm2:reload": "pm2 reload ecosystem.config.cjs",
+  "pm2:delete": "pm2 delete ecosystem.config.cjs",
   "pm2:logs": "pm2 logs",
   "pm2:monit": "pm2 monit",
   "pm2:status": "pm2 status"
@@ -101,7 +101,7 @@ npm run pm2:stop
 ## 📊 Ecosystem Configuration
 
 ```javascript
-// ecosystem.config.js
+// ecosystem.config.cjs
 module.exports = {
   apps: [
     {
@@ -132,14 +132,14 @@ module.exports = {
 ### Change Memory Limit
 
 ```javascript
-// ecosystem.config.js
+// ecosystem.config.cjs
 max_memory_restart: '1G',  // 1GB instead of 500MB
 ```
 
 ### Enable Watch Mode
 
 ```javascript
-// ecosystem.config.js
+// ecosystem.config.cjs
 watch: true,
 ignore_watch: ['node_modules', 'logs', '.git'],
 ```
@@ -147,7 +147,7 @@ ignore_watch: ['node_modules', 'logs', '.git'],
 ### Cluster Mode
 
 ```javascript
-// ecosystem.config.js
+// ecosystem.config.cjs
 instances: 4,        // or 'max' for all CPUs
 exec_mode: 'cluster',
 ```
@@ -155,7 +155,7 @@ exec_mode: 'cluster',
 ### Cron Restart
 
 ```javascript
-// ecosystem.config.js
+// ecosystem.config.cjs
 cron_restart: '0 0 * * *',  // Restart daily at midnight
 ```
 
@@ -210,7 +210,7 @@ pm2 logs --err
 cat .env
 
 # Restart with update-env
-pm2 restart ecosystem.config.js --update-env
+pm2 restart ecosystem.config.cjs --update-env
 ```
 
 ### Port already in use
@@ -228,7 +228,7 @@ API_PORT=3001
 ### Memory issues
 ```bash
 # Increase memory limit
-# Edit ecosystem.config.js
+# Edit ecosystem.config.cjs
 max_memory_restart: '1G',
 
 # Restart

@@ -59,7 +59,7 @@ case $choice in
     1)
         echo ""
         echo "🚀 Starting services..."
-        pm2 start ecosystem.config.js
+        pm2 start ecosystem.config.cjs
         echo ""
         echo "✅ Services started!"
         pm2 status
@@ -67,7 +67,7 @@ case $choice in
     2)
         echo ""
         echo "🛑 Stopping services..."
-        pm2 stop ecosystem.config.js
+        pm2 stop ecosystem.config.cjs
         echo ""
         echo "✅ Services stopped!"
         pm2 status
@@ -75,7 +75,7 @@ case $choice in
     3)
         echo ""
         echo "🔄 Restarting services..."
-        pm2 restart ecosystem.config.js
+        pm2 restart ecosystem.config.cjs
         echo ""
         echo "✅ Services restarted!"
         pm2 status
